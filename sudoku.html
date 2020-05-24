@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styleSudoku.css">
+    <title>Sudoku</title>
+    <script src="sudoku.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="sudoku.gif" alt="Sudoku" id="nameGame">
+        </header>
+        <main>
+            
+            <div class="board" id="board">
+                
+            </div>
+        </main>
+        <aside>
+            <div class="dashboard">
+
+                <div class="time">
+
+                    <p>Your time:</p>
+                    <h2 class="timeCounter">00:00:00</h2>
+
+                </div>
+
+                <div class="difficulty-selector">
+
+                    <h2>New game</h2>
+                    <p>Select level</p>
+                
+                    <div class="button" id="easy">Easy</div>
+                    <div class="button" id="medium">Medium</div>
+                    <div class="button" id="hard">Hard</div>
+                    <div class="button" id="vhard">Very hard</div>
+                </div>
+
+                <div class="give-up">
+                    <p>Fuck this sh*t, I quit!</p>
+                    <div class="button" id="giveup">Solve it to me</div>
+                </div>
+                
+            </div>
+        </aside>
+        <footer></footer>
+    </div>
+
+    <div id="result-bg"></div>
+    <div class="border-result" id="result">
+        <h1>Congratulations!!!</h1>
+        <h2 id="levelMessage">You did it!! At easy level at least...</h2>
+        <div id="bt-close" onclick="closeMessage()">OK</div>
+    </div>
+
+
+</body>
+
+<script>
+    fillBoard();
+    
+    /* this function fill the board with all 81 input cells and add
+    especifc classes for the 3 x 3 area cells */
+
+    function fillBoard(){
+        var tags = "";
+        var divClass = "";
+        
+        for(let y = 0; y < 9; y++){
+            for(let x = 0; x < 9; x++){
+                let qx = Math.floor(x / 3).toString();
+                let qy = Math.floor(y / 3).toString();
+
+                if((((qx == "0") || (qx == "2")) && 
+                (qy != "1")) || ((qx + qy) == "11")){
+                    divClass = "groupcell_g";
+                }else{
+                    divClass = "groupcell_w";
+                }
+
+                tags += '<div class="cell '+divClass+' '+qx+qy+'" id="d'+ "" + x + y +'" '+
+                'onclick="lightCells(this.id)"><input type="number" '+
+                'min="1" max="9" id="'+ "" + x + y +'"'+
+                'onKeyPress="if(this.value.length>0) return false;"'+
+                'onKeyUp="checkNumber(this.id);"></div>';
+            }
+        }
+
+        document.getElementById('board').innerHTML = tags;
+    }
+
+</script>
+</html> 

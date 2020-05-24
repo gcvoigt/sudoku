@@ -1,0 +1,235 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica;
+}
+
+*:focus {
+    outline: none;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 10% 50% 40%;
+    grid-template-rows: 20vh 65vh 15vh;
+}
+
+header{
+    background-color: transparent;
+    grid-column: 1 / 4;
+    display: grid;
+}
+
+main{
+    background-color: transparent;
+    grid-column: 2 / 3;
+    display: grid;
+}
+
+aside{
+    background-color: transparent;
+    grid-column: 3 / 4;
+    display: grid;
+}
+
+footer{
+    background-color: transparent;
+    grid-column: 1 / 4;
+}
+
+#nameGame{
+    justify-self: center;
+    align-self: center;
+    width: 28vh;
+}
+
+.board{
+    background: rgb(242,58,2);
+    background: linear-gradient(343deg, rgba(242,58,2,1) 12%, rgba(11,11,177,1) 47%, rgba(255,209,0,1) 85%);
+    display: grid;
+    height: 64vh;
+    width: 64vh;
+    grid-template-columns: repeat(9, auto);
+    grid-template-rows: repeat(9, auto);
+    grid-gap: 3px;
+    padding: 5px;
+    justify-self: right;
+}
+
+.cell{
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    padding: 0;
+}
+
+.board > div > input{
+    text-align: center;
+    border: none;
+    font-size: 3vh;
+    width: 100%;
+    background: transparent;
+    color:#5c2094;
+}
+
+.groupcell_g{
+    background-color: rgb(230, 230, 230, 0.8);
+}
+
+.groupcell_w{
+    background-color: #fdfdfd;
+}
+
+.detach{
+    box-shadow: inset 0 0 15px #b674db;
+}
+
+.cell-detach{
+    box-shadow: inset 0 0 25px #a62cec;
+}
+
+.dashboard{
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    width: 35vh;
+    height: 100%;
+    justify-self: left;
+    margin: 0 0 0 3vh;
+}
+
+.dashboard p, h2{
+    color: #640c7a;
+    margin: 7px 0;
+}
+
+.dashboard p{
+    font-size: 2vh;
+}
+
+h2{font-size: 3vh;}
+
+.time{
+    padding: 0 0 0 20px;;
+}
+
+.timeCounter{
+    font-size: 3.7vh;
+    line-height: 3.7vh;
+    color: darkgray !important;
+}
+
+.difficulty-selector{
+    box-sizing: border-box;
+    grid-row: 2 / 5;
+    padding: 0 0 0 20px;
+}
+
+.button{
+    display: grid;
+    height: 4vh;
+    width: 18vh;
+    justify-items: center;
+    align-items: center;
+    border-radius: 1vh;
+    margin: 1vh 0 1vh 0;
+    color: #fff;
+    font-size: 1.7vh;
+    padding: 8px;
+    cursor: pointer;
+    background: rgb(24,11,238);
+    background: linear-gradient(341deg, rgba(24,11,238,1) 0%, rgba(66,66,255,1) 0%, rgba(226,28,255,1) 100%);
+}
+
+.button::before{
+    font-size: 1.3vh;
+}
+
+.give-up{
+    padding: 0 0 0 20px;
+    display: none;
+}
+
+#easy::before{
+    content: "I'm just a kid!";
+}
+
+#medium::before{
+    content: "Hmm...let's try";
+}
+
+#hard::before{
+    content: "Gimme more, baby";
+}
+
+#vhard::before{
+    content: "Are u f**ing kidding me?!";
+}
+
+#result-bg{
+    position: absolute;
+    width: 64vh;
+    height: 35vh;
+    top: 32vh;
+    left: calc(50% - 32vh);
+    background-color: #eeeded;
+    opacity: 0.9;
+    backdrop-filter: blur(10px);
+    z-index: 1;
+    display: none;
+}
+
+#result{
+    position: absolute;
+    width: 64vh;
+    height: 35vh;
+    top: 32vh;
+    left: calc(50% - 32vh);
+    text-align: center;
+    box-sizing: border-box;
+    padding: 6vh 3vh;
+    z-index: 2;
+    display: none;
+}
+
+.border-result{
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+}
+
+#result h1{
+    font-size: 5vh;
+    line-height: 4vh;
+    margin: 0.5vh;
+    background: -webkit-linear-gradient(#743ad5, #d53a9d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#bt-close{
+    cursor: pointer;
+    color: #fff;
+    box-sizing: border-box;
+    justify-self: center;
+    align-self: end;
+    border-radius: 1vh;
+    font-size: 3vh;
+    padding: 1.5vh;
+    height: 6vh;
+    width: 18vh;
+    background: rgb(24,11,238);
+    background: linear-gradient(341deg, rgba(24,11,238,1) 0%, rgba(66,66,255,1) 0%, rgba(226,28,255,1) 100%);
+}
+
+#bt-close:hover{
+    opacity: .8;
+}
