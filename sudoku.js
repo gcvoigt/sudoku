@@ -11,9 +11,19 @@ const vhard = 12;
 
 var levelAtNow = medium; //store level
 
+// about timer things
+
+var hour = 0;
+var minute = 0;
+var seconds = 0;
+var totalSeconds = 0;
+
+
 // some initial stuffs to do
 
 document.addEventListener("DOMContentLoaded",function(){
+
+    runningTimer = null;
 
     initialNumbers(levelAtNow);
 
@@ -21,6 +31,10 @@ document.addEventListener("DOMContentLoaded",function(){
 
     [...document.querySelectorAll('.button')].forEach(function(item) {
         item.addEventListener('click', function() {
+
+            stopTimer();
+
+            // calls fill initial numbers function depending level chosen
             switch(item.id){
                 case 'easy':
                     levelAtNow = easy;
@@ -44,6 +58,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 default:
                     console.log('defaut');
             }
+
           
         });
     });
@@ -53,6 +68,7 @@ document.addEventListener("DOMContentLoaded",function(){
 // this function fill board with initial numbers
 
 function initialNumbers(level){
+
 
     // clean board before input new numbers
     
@@ -83,8 +99,6 @@ function initialNumbers(level){
             checkWinner[x][y] = "e";
         }
     }
-
-    //console.table(checkWinner); **********************
 
     // solve the board
 
@@ -132,6 +146,10 @@ function initialNumbers(level){
             document.getElementById(target).setAttribute('readonly','readonly');
         }
     }
+
+    //starts to count the time
+
+    runningTimer = setInterval(startTimer, 1000);
 }
 
 // function to clear the board
@@ -230,6 +248,11 @@ function haveWeAWinner(){
 // shows up message for the winner
 
 function weHaveAWinner(){
+
+    //stops timer
+    stopTimer();
+
+    //select message
     var message;
     switch(levelAtNow){
         case easy:
@@ -263,6 +286,30 @@ function weHaveAWinner(){
 function closeMessage(){
     document.getElementById('result').style.display = 'none';
     document.getElementById('result-bg').style.display = 'none';
+}
+
+// function to count the time
+
+function startTimer() {
+    ++totalSeconds;
+    hour = Math.floor(totalSeconds /3600);
+    minute = Math.floor((totalSeconds - hour*3600)/60);
+    seconds = totalSeconds - (hour*3600 + minute*60);
+
+    document.getElementById("hour").innerHTML =pad(hour);
+    document.getElementById("minutes").innerHTML =pad(minute);
+    document.getElementById("seconds").innerHTML =pad(seconds);
+  }
+
+// add 0 to the left of timer numbers
+function pad(val){ return val > 9 ? val : "0" + val;}
+
+// stops timer
+function stopTimer(){
+    if (runningTimer){
+        clearInterval(runningTimer);
+        totalSeconds = 0;
+    }
 }
 
 // shuffle arrays function
