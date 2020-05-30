@@ -18,7 +18,6 @@ var minute = 0;
 var seconds = 0;
 var totalSeconds = 0;
 
-
 // some initial stuffs to do
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -33,37 +32,36 @@ document.addEventListener("DOMContentLoaded",function(){
         item.addEventListener('click', function() {
 
             stopTimer();
-
-            // calls fill initial numbers function depending level chosen
-            switch(item.id){
-                case 'easy':
-                    levelAtNow = easy;
-                    initialNumbers(levelAtNow);
-                    break;
-                case 'medium':
-                    levelAtNow = medium;
-                    initialNumbers(levelAtNow);
-                    break;
-                case 'hard':
-                    levelAtNow = hard;
-                    initialNumbers(levelAtNow);
-                    break;
-                case 'vhard':
-                    levelAtNow = vhard;
-                    initialNumbers(levelAtNow);
-                    break;
-                case 'giveup':
-                    console.log('give up');
-                    break;
-                default:
-                    console.log('defaut');
-            }
-
-          
+            selectLevel(item.id);
         });
     });
 
 });
+
+// funtion calls fill initial numbers function depending level chosen
+
+function selectLevel(id){
+    if(id != 'giveup'){
+        switch(id){
+            case 'easy':
+                levelAtNow = easy;
+                break;
+            case 'medium':
+                levelAtNow = medium;
+                break;
+            case 'hard':
+                levelAtNow = hard;
+                break;
+            case 'vhard':
+                levelAtNow = vhard;
+                break;
+        }
+        initialNumbers(levelAtNow);
+    }else{
+        //case of give up
+        showMetheTrue();
+    }
+}
 
 // this function fill board with initial numbers
 
@@ -73,6 +71,10 @@ function initialNumbers(level){
     // clean board before input new numbers
     
     cleanBoard();
+
+    // reset counter to shows 00 at display
+
+    zeroCounter();
 
     //fill an array with 1 to 9 numbers
 
@@ -90,6 +92,7 @@ function initialNumbers(level){
     for(let x = 0; x < 9; x++){
         filledBoard[x] = [];
         checkWinner[x] = [];
+        //storeInitialNumbers[x] = [];
         for(let y = 0; y < 9; y++){
             if(x == 0){
                 filledBoard[x][y] = ""+numToFill[y];
@@ -97,6 +100,7 @@ function initialNumbers(level){
                 filledBoard[x][y] = '.';
             }
             checkWinner[x][y] = "e";
+            //storeInitialNumbers[x][y] = '';
         }
     }
 
@@ -104,7 +108,6 @@ function initialNumbers(level){
 
     autoSolver(filledBoard);
 
-    //console.table(filledBoard);
     
     // get some random numbers to position that amount of numbers in the board
 
@@ -127,8 +130,8 @@ function initialNumbers(level){
 
     // take the inputs from board
 
-    var listCells = document.querySelector('.board').childNodes;
-    var listArray = Array.from(listCells);
+    listCells = document.querySelector('.board').childNodes;
+    listArray = Array.from(listCells);
 
 
     // fill board with initial numbers
@@ -137,9 +140,19 @@ function initialNumbers(level){
 
         if(arrPositions.includes(w)){
 
+            // get id (which is basically x/y postition) of cell from listArray in the position of w 
             let target = document.getElementById(listArray[w].id).firstChild.id;
-            let num = filledBoard[parseInt(target.charAt(1))][parseInt(target.charAt(0))];
-            checkWinner[parseInt(target.charAt(1))][parseInt(target.charAt(0))] = "c";
+
+            let xAxis = parseInt(target.charAt(1));
+            let yAxis = parseInt(target.charAt(0));
+
+            // with the id we can retrieve the number in exact position at filledBoard
+            let num = filledBoard[xAxis][yAxis];
+
+            // store this position at array to check winner
+            checkWinner[xAxis][yAxis] = "c";
+
+            // sets that input in the board with the number
             document.getElementById(target).value = num;
 
             //avoid editing filled cell
@@ -160,7 +173,6 @@ function cleanBoard(){
 
         document.getElementById(id).value = '';
         document.getElementById(id).removeAttribute('readonly');
-        //console.log(id);
     });
 }
 
@@ -195,6 +207,12 @@ function checkNumber(input){
     let inputNum = document.getElementById(input);
     let inputParent = document.getElementById(input).parentElement.className.substr(17,2);
     let num = inputNum.value;
+
+    // avoid 0 or 'e' inputs
+    if(num == 0 || num == 'e'){
+        inputNum.value = '';
+        return false;
+    }
     
     let x = input.charAt(0);
     let y = input.charAt(1);
@@ -264,28 +282,24 @@ function weHaveAWinner(){
             message = 'You did it!! You rocks!';
             break;
         case hard:
-            levelAtNow = hard;
+            //levelAtNow = hard;
             message = 'You did it!! We have a big brain here.';
             break;
         case vhard:
-            levelAtNow = vhard;
+            //levelAtNow = vhard;
             message = "I can't belive! You are freak...";
             break;
-        default:
-            console.log('defaut');
     }
 
     document.getElementById('levelMessage').innerHTML = message;
 
     document.getElementById('result').style.display = 'grid';
-    document.getElementById('result-bg').style.display = 'block';
 }
 
 //close winner message
 
 function closeMessage(){
     document.getElementById('result').style.display = 'none';
-    document.getElementById('result-bg').style.display = 'none';
 }
 
 // function to count the time
@@ -312,6 +326,14 @@ function stopTimer(){
     }
 }
 
+// it's justo shows 00 in time counter when game is reseted
+
+function zeroCounter(){
+    document.getElementById("hour").innerHTML = '00';
+    document.getElementById("minutes").innerHTML = '00';
+    document.getElementById("seconds").innerHTML = '00';
+}
+
 // shuffle arrays function
 
 function shuffle(arr) {
@@ -321,6 +343,66 @@ function shuffle(arr) {
     }
     return arr;
 }
+
+// solve board in case player ask for it
+
+function showMetheTrue(){
+    delayActionDelete(0);
+    setTimeout(function(){
+        delayActionFill(0);
+    },1000);
+}
+
+// delete numbers inputeds on board
+
+function delayActionDelete(counter){
+    if(counter <= 80){
+        setTimeout(function(){
+            let target = document.getElementById(listArray[counter].id);
+            if(!target.firstChild.hasAttribute('readonly')){
+                target.firstChild.value = '';
+            }
+            counter++;
+            delayActionDelete(counter);
+        },10);
+    }
+}
+
+//fill the board with correct numbers
+
+function delayActionFill(counter){
+    if(counter < 81){
+        setTimeout(function(){
+            let div = document.getElementById(listArray[counter].id);
+            //console.log(counter + '/' + target.id);
+
+            let target = div.firstChild.id;
+
+            let xAxis = parseInt(target.charAt(1));
+            let yAxis = parseInt(target.charAt(0));
+
+            // with the id we can retrieve the number in exact position at filledBoard
+            let num = filledBoard[xAxis][yAxis];
+
+            // sets that input in the board with the number
+            document.getElementById(target).value = num;
+            document.getElementById(target).style.color = '#5c2094';
+
+            counter++;
+            delayActionFill(counter);
+        },15);
+    }else{
+        showMessageGiveUp();
+    }
+}
+
+function showMessageGiveUp(){
+    document.getElementById('levelMessage').innerHTML = 'To me, of course! You not, you failed.';
+    document.getElementById('result').style.display = 'grid';
+}
+
+
+// functions to solve board
 
 function isValid(board, row, col, k) {
     for (let i = 0; i < 9; i++) {

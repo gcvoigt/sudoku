@@ -173,25 +173,14 @@ h2{font-size: 3vh;}
     content: "Are u f**ing kidding me?!";
 }
 
-#result-bg{
-    position: absolute;
-    width: 64vh;
-    height: 35vh;
-    top: 32vh;
-    left: calc(50% - 32vh);
-    background-color: #eeeded;
-    opacity: 0.9;
-    backdrop-filter: blur(10px);
-    z-index: 1;
-    display: none;
-}
-
 #result{
     position: absolute;
     width: 64vh;
     height: 35vh;
     top: 32vh;
     left: calc(50% - 32vh);
+    background-color: rgb(238, 237, 237, 0.9);
+    backdrop-filter: blur(10px);
     text-align: center;
     box-sizing: border-box;
     padding: 6vh 3vh;
